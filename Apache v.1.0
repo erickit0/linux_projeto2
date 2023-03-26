@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Imprime uma mensagem informando que a atualização do servidor está sendo iniciada
+echo "Atualizando o servidor..."
+
+# Atualiza a lista de pacotes disponíveis para download no servidor
+apt update
+
+# Instala as atualizações disponíveis para o software já instalado no servidor sem exigir a confirmação do usuário
+apt upgrade -y
+
+# Instala o servidor web Apache2
+apt install apache2 -y
+
+# Instala a ferramenta de linha de comando unzip
+apt install unzip -y
+
+# Imprime uma mensagem informando que os arquivos da aplicação estão sendo baixados e copiados
+echo "Baixando e copiando os arquivos da aplicação..."
+
+# Define o diretório temporário onde os arquivos da aplicação serão baixados e descompactados
+TEMP_DIR=/tmp
+
+# Define a URL do arquivo zip da aplicação no GitHub
+APP_ZIP_URL=https://github.com/denilsonbonatti/linux-site-dio/archive/refs/heads/main.zip
+
+# Baixa o arquivo zip da aplicação do GitHub para o diretório temporário
+wget -q -O $TEMP_DIR/main.zip $APP_ZIP_URL
+
+# Descompacta o arquivo zip da aplicação no diretório temporário
+unzip -q $TEMP_DIR/main.zip -d $TEMP_DIR
+
+# Copia recursivamente todos os arquivos e diretórios da aplicação para o diretório padrão do Apache para arquivos de site da web
+cp -R $TEMP_DIR/linux-site-dio-main/* /var/www/html/
+
+# Imprime uma mensagem informando que a instalação da aplicação foi concluída
+echo "Instalação da aplicação concluída!"
